@@ -1,3 +1,48 @@
+#include <sys/time.h>
+#// other includes ....
+
+// Aaa a struct to store message time data 
+typedef struct {
+	int src;
+	int dst;
+	struct timeval send_time;
+	struct timeval recv_time;
+} message_timeing_t;
+
+// Add a global array to story the message time data 
+#define MAX_TIMING_DATA 1000
+message_timing_t timing _data[MAX_TIMING_DATA];
+int timing_data_count = 0;
+
+//Modify the mini_send () function 
+int mini_send(proc, m_ptr, flags) 
+	register struct proc *proc'
+message *m_ptr;
+int flags;
+{
+    // ...
+
+    // Add code to record the timestamp before the message is sent
+    struct timeval send_time;
+    gettimeofday(&send_time, NULL);
+
+
+    // The original mini_send() code
+
+    // ...
+
+    // Add code to store the timing data in the global array
+    if (timing_data_count < MAX_TIMING_DATA) {
+        timing_data[timing_data_count].src = proc->p_endpoint;
+        timing_data[timing_data_count].dst = m_ptr->m_source;
+        timing_data[timing_data_count].send_time = send_time;
+        timing_data_count++;
+    }
+
+    return result;
+}
+
+
 #ifndef PROC_H
 #define PROC_H
 
